@@ -13,13 +13,27 @@ class QWindow: public QMainWindow{
 public:
     QWindow(QWidget* parent):QMainWindow(parent){
         resize(sizeHint());
-        m_button=new QPushButton("test",this);
+        m_button_start=new QPushButton("start",this);
+	m_button_id=new QPushButton("identity",this);
+	//m_button_start->resize(QSize(100,50));
+	//m_button_id->resize(QSize(100,50));
         m_viewer=new QtView(this);
         m_viewer->resize(m_viewer->sizeHint());
-        connect(m_button,SIGNAL(released()),this,SLOT(HandleStart()));
+        connect(m_button_start,SIGNAL(released()),this,SLOT(HandleStart()));
+	connect(m_button_id,SIGNAL(released()),this,SLOT(HandleIdentity()));
         m_layout=new QHBoxLayout;
         m_layout->addWidget(m_viewer);
-        m_layout->addWidget(m_button);
+	QGroupBox *qb=new QGroupBox(this);
+	QHBoxLayout *b_layout=new QHBoxLayout(this);
+	b_layout->addWidget(m_button_id);
+	b_layout->addWidget(m_button_start);
+	qb->setLayout(b_layout);
+	qb->resize(QSize(200,70));
+	 //qb->addButton(m_button_id);
+	//qb->addButton(m_button_start);
+	m_layout->addWidget(qb);
+        //m_layout->addWidget(m_button_start);
+	//m_layout->addWidget(m_button_id);
         m_viewer->lower();
         setLayout(m_layout);
         setCentralWidget(m_viewer);
@@ -41,8 +55,11 @@ private slots:
         printf("handle start button");
         m_viewer->test();
     };
+    void HandleIdentity(){
+	m_viewer->LoadIdentity();
+    }
 private:
-    QPushButton* m_button;
+    QPushButton* m_button_start,*m_button_id;
     QtView* m_viewer;
     QLayout *m_layout;
 };

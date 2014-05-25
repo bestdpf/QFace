@@ -300,6 +300,7 @@ bool FDPFile::load(std::istream& input, boost::shared_ptr<FDP> pFDP)
 
 bool FDPFile::load(const std::string& filename, boost::shared_ptr<FDP> pFDP)
 {
+	printf("load fdp file named %s\n",filename.c_str());
 	TiXmlDocument doc( filename.c_str() );
 	if(!doc.LoadFile())
 		return false;

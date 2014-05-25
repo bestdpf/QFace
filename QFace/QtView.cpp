@@ -14,6 +14,9 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     m_pApp=0;
     m_pCamera=0;
     m_init=false;
+    xRot=0;
+    yRot=0;
+    zRot=0;
     m_settings= new QSettings(QString("QFace.ini"),QSettings::IniFormat);
     QVariant dummy;
     dummy=m_settings->value("Network/Port",50011);
@@ -159,14 +162,34 @@ void QtView::Render()
 		m_pCamera->setMode(XFaceApp::ModelCamera::ZOOM);
 	}
 
-	m_pCamera->apply();
-
+	//m_pCamera->apply();
+	
+	//dpf version rotate
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -700.0);
+    glRotatef(xRot /1.0, 1.0, 0.0, 0.0);
+    glRotatef(yRot /1.0 , 0.0, 1.0, 0.0);
+    glRotatef(zRot /1.0, 0.0, 0.0, 1.0);
+	//m_pCamera->setAxisAngle(AxisAngle(,0));
 	Task rendertask("RENDER_FRAME");
 	m_pApp->newTask(rendertask);
 }
 
 void QtView::test(){
     m_pApp->onResumePlayback();
+}
+
+void QtView::LoadIdentity(){
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -700.0);
+    glRotatef(0 /1.0, 1.0, 0.0, 0.0);
+    glRotatef(0/1.0 , 0.0, 1.0, 0.0);
+    glRotatef(0 /1.0, 0.0, 0.0, 1.0);
+    lastPos=QPoint(0,0);
+    xRot=0;
+    yRot=0;
+    zRot=0;
 }
 
 void QtView::OnPaint()
@@ -183,3 +206,58 @@ QSize QtView::sizeHint() const
  {
      return QSize(640, 480);
  }
+static void qNormalizeAngle(int &angle)
+{
+    while (angle < 0)
+        angle += 360 * 16;
+    while (angle > 360 * 16)
+        angle -= 360 * 16;
+}
+ 
+
+ //! [5]
+void QtView::setXRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != xRot) {
+        xRot = angle;
+        emit xRotationChanged(angle);
+        updateGL();
+    }
+}
+//! [5]
+
+void QtView::setYRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != yRot) {
+        yRot = angle;
+        emit yRotationChanged(angle);
+        updateGL();
+    }
+}
+
+void QtView::setZRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != zRot) {
+        zRot = angle;
+        emit zRotationChanged(angle);
+        updateGL();
+    }
+}
+
+void QtView::mouseMoveEvent(QMouseEvent *event)
+{
+    int dx = event->x() - lastPos.x();
+    int dy = event->y() - lastPos.y();
+
+    if (event->buttons() & Qt::LeftButton) {
+        setXRotation(xRot + 0.08 * dy);
+        setYRotation(yRot + 0.08 * dx);
+    } else if (event->buttons() & Qt::RightButton) {
+        setXRotation(xRot + 0.08 * dy);
+        setZRotation(zRot + 0.08 * dx);
+    }
+    lastPos = event->pos();
+}

@@ -17,6 +17,8 @@ class QtView: public QGLWidget{
 	QTimer* m_timer;
 	QSettings* m_settings;
 	unsigned long m_listeningPort;
+	int xRot,yRot,zRot;
+	QPoint lastPos;
     public:
         QtView(QWidget* parent=0);
         ~QtView();
@@ -28,11 +30,21 @@ class QtView: public QGLWidget{
 	void LoadFace();
 	void Render();
     void OnPaint();
+    void mouseMoveEvent(QMouseEvent *event);
     protected slots:
 	void OnTimer();
 	void OnIdle();
+	void setXRotation(int angle);
+    void setYRotation(int angle);
+    void setZRotation(int angle);
+signals:
+    void xRotationChanged(int angle);
+    void yRotationChanged(int angle);
+    void zRotationChanged(int angle);
+
     public:
 	void test();
+	void LoadIdentity();
     void loadFDP(const std::string& filename, const std::string& path);
 	void loadFAP(const std::string& filename);
 	void setInitialFap(const std::string& filename) {m_initialFap = filename;}

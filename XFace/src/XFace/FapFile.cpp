@@ -31,7 +31,10 @@
 #include <string>
 #include <cstdlib>
 #include <XFace/FDP.h> // for FAPU
-
+#ifndef WIN32
+#include <stdint.h>
+#endif
+#define size_t uint32_t
 namespace XFace{
 
 FAPFile::FAPFile(void) : m_bLoaded(false), m_currentFAPID(0)
@@ -44,6 +47,7 @@ FAPFile::~FAPFile(void)
 
 bool FAPFile::open(std::istream& input, const FAPU& fapu)
 {
+  printf("open fap file\n");
 	m_FAPs.clear();
 	m_bLoaded = false;
 

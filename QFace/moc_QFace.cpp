@@ -22,7 +22,7 @@ static const uint qt_meta_data_QFace__QWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,12 +31,14 @@ static const uint qt_meta_data_QFace__QWindow[] = {
 
  // slots: signature, parameters, type, tag, flags
       16,   15,   15,   15, 0x08,
+      30,   15,   15,   15, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_QFace__QWindow[] = {
     "QFace::QWindow\0\0HandleStart()\0"
+    "HandleIdentity()\0"
 };
 
 void QFace::QWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -46,6 +48,7 @@ void QFace::QWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         QWindow *_t = static_cast<QWindow *>(_o);
         switch (_id) {
         case 0: _t->HandleStart(); break;
+        case 1: _t->HandleIdentity(); break;
         default: ;
         }
     }
@@ -84,9 +87,9 @@ int QFace::QWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }
