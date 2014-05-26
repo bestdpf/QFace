@@ -29,6 +29,7 @@
 #include <iostream>
 #include <strstream>
 #include <string>
+#include <sstream>
 #include <cstdlib>
 #include <XFace/FDP.h> // for FAPU
 #ifndef WIN32
@@ -44,6 +45,12 @@ FAPFile::FAPFile(void) : m_bLoaded(false), m_currentFAPID(0)
 FAPFile::~FAPFile(void)
 {
 }
+bool FAPFile::openString(std::string& input, const FAPU& fapu)
+{
+  std::istringstream iss(input);
+  return true;
+}
+
 
 bool FAPFile::open(std::istream& input, const FAPU& fapu)
 {

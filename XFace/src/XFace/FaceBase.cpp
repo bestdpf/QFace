@@ -59,25 +59,17 @@ bool FaceBase::init(const std::string& filename, const std::string& path)
 	// FDP items load
 	// if we already have an object and re-initing
 	reset();
-    printf("afater reset\n");
 	FDPLoader fdp_file;
 	if(fdp_file.load(path + filename, m_pFDP))
 	{   
-        printf("0.5\n");
 		std::string datname = filename;
 		datname.replace(datname.end() - 3, datname.end(), "dat");
-        printf("0.6\n");
 		ModelFileFactory::unloadAllFiles();
-		printf("0.7\n");
-        fflush(stdout);
         ModelFileFactory::initBinaryLoader(datname, path);
-        printf("0.8\n");
         fflush(stdout);
-		MorphController::getInstance()->clearDictionary();
-	    printf("0.9\n");	
+		MorphController::getInstance()->clearDictionary();	
 		// initialize the textures and meshes
 		if( !initMeshes(fdp_file.getFaceEntityMeshList(), path) ){
-            printf("fb init text and mesh fail\n");
 			return false;
         }
 
@@ -87,15 +79,10 @@ bool FaceBase::init(const std::string& filename, const std::string& path)
 			// also resets the controller
 			MorphController::getInstance()->setFDP(m_pFDP);
 		}
-        printf("fb 1\n");	
 		m_face.initInfluenceCalculators(m_pFDP->getItems());
-        printf("fb 2\n");
 		m_face.initBindings(fdp_file.getBindings());
-        printf("fb 3\n");
 		m_face.initEyePivots(m_pFDP->getLeftEyePivot(), m_pFDP->getRightEyePivot());
-        printf("fb 4\n");
 		ModelFileFactory::releaseBinaryLoader();
-        printf("fb 5\n");
 	}
 	else
 	{
@@ -103,8 +90,6 @@ bool FaceBase::init(const std::string& filename, const std::string& path)
 		m_errorString << "Unable to load FDP file: " << filename << " at " << path << std::endl;
 		return false;
 	}
-    printf("finsh fb load fdp\n");
-    fflush(stdout);
 	// initialized without loading the FDP file (first time creation)
 	return true;	
 }

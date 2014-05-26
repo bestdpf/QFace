@@ -6,6 +6,7 @@
 #include<QSettings>
 #include<XFaceApp/ModelCamera.h>
 #include"QtFace.h"
+#include<Socket.h>
 
 class QtView: public QGLWidget{
         Q_OBJECT
@@ -17,6 +18,7 @@ class QtView: public QGLWidget{
 	QTimer* m_timer;
 	QSettings* m_settings;
 	unsigned long m_listeningPort;
+	net::TCPServerSocket *m_server;
 	int xRot,yRot,zRot;
 	QPoint lastPos;
     public:
@@ -37,6 +39,7 @@ class QtView: public QGLWidget{
 	void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
+    void listenSever();
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);

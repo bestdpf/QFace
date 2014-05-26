@@ -6,9 +6,13 @@
 #include<XFaceApp/Task.h>
 #include<XFaceApp/XMLUtils.h>
 #include<cstdio>
+#include<boost/thread.hpp>
 using XFaceApp::Task;
 using XFaceApp::TaskDictionary;
 using XFaceApp::XMLUtils;
+
+using namespace boost;
+using namespace net;
 
 QtView::QtView(QWidget* parent):QGLWidget(parent){
     m_pApp=0;
@@ -31,6 +35,12 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     //seems useless of idle signal
     //connect(m_timer,0,this,SLOT(OnIdle()));
     m_timer->start(1000);
+    m_server= new TCPServerSocket(m_listeningPort);
+    //thread_group tg;
+    boost::thread* th1 = new boost::thread(bind(&QtView::listenSever,this));
+    th1->detach();
+    //tg.add_thread(th1);
+    //tg.join_all();
 }
 QtView::~QtView(){
     delete m_pCamera;
@@ -48,6 +58,19 @@ void QtView::OnIdle(){
   makeCurrent();
   m_pApp->processTask();
 }
+
+void QtView::listenSever()
+{
+  while(true){
+    TCPSocket *sock=m_server->accept();
+    char buff[1024];
+    while(sock->recv(buff,1023)>0){
+        printf("get:\n%s\n",buff);
+    }
+    delete sock;
+  }
+}
+
 
 void QtView::initGL(){
     QColor qtPurple = QColor::fromCmykF(0.5, 0.5 , 0.0, 0.0);

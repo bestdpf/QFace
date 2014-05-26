@@ -71,6 +71,7 @@ public:
 	void next();
 	void rewind();
 	bool open(std::istream& input, const FAPU& fapu);
+	bool openString(std::string& input, const FAPU& fapu);
 	virtual size_t getFAPCount() const {return m_FAPs.size();}
 	virtual unsigned long getCurrentFAPId() const{return m_currentFAPID;}
 
