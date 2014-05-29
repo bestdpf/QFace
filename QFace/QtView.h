@@ -39,7 +39,8 @@ class QtView: public QGLWidget{
 	void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
-    void listenSever();
+    void listenServer();
+    
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
@@ -48,7 +49,7 @@ signals:
     public:
 	void test();
 	void LoadIdentity();
-    void loadFDP(const std::string& filename, const std::string& path);
+	void loadFDP(const std::string& filename, const std::string& path);
 	void loadFAP(const std::string& filename);
 	void setInitialFap(const std::string& filename) {m_initialFap = filename;}
 	void setInitialFdp(const std::string& filename, const std::string path) {m_initialFdp = filename; m_initialFdpPath = path;}

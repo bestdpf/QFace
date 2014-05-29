@@ -167,6 +167,17 @@ void ApplicationBase::onAdvanceFrame()
 */
 }
 
+/*
+ * 
+ */
+
+bool ApplicationBase::onActString(std::string& str)
+{
+  m_pFapStream->openString(str,m_pFace->getFAPU());
+  onResumePlayback();
+}
+
+
 /*!
 	Starts/Resumes the playback of FAP stream and the WAV file and sends back 
 	Notification::kStarted in the beginning and Notification::kFinished in the end to the client. On error, Notification::kError

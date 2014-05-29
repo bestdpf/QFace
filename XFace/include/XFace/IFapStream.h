@@ -32,6 +32,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <sstream>
 #include "FDP.h" // to retrieve FAPU class
 
 namespace XFace{
@@ -79,6 +80,7 @@ protected:
 	ExpressionStruct m_currentExpression; //!< current expression value
 	short m_FPS; //!< Number of frames per second to render
 	float m_version; //!< Version of the file
+	std::stringstream m_ss;
 public:
 	//! query open
 	virtual bool isEnd() const = 0;
@@ -86,6 +88,7 @@ public:
 	virtual bool isOpen() const = 0;
 	//! open/read the stream
 	virtual bool open(std::istream&, const FAPU&) = 0;
+	virtual bool openString(std::string&, const FAPU&)=0;
 	//! Advance to the next FAP.
 	virtual void next() = 0; 
 	//! Rewind to the first FAP.

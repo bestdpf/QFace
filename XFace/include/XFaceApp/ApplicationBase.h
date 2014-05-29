@@ -93,6 +93,7 @@ protected:
 	virtual void onRenderFrame() const;
 	virtual void onAdvanceFrame();
 	virtual bool onResumePlayback();
+	virtual bool onActString(std::string& str);
 	virtual void onStopPlayback();
 	virtual void onRewindPlayback() const;
 	//! Do not forget to reimplement this on derived classes, otherwise your application won't be killed.

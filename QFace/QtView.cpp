@@ -37,7 +37,7 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     m_timer->start(1000);
     m_server= new TCPServerSocket(m_listeningPort);
     //thread_group tg;
-    boost::thread* th1 = new boost::thread(bind(&QtView::listenSever,this));
+    boost::thread* th1 = new boost::thread(bind(&QtView::listenServer,this));
     th1->detach();
     //tg.add_thread(th1);
     //tg.join_all();
@@ -59,13 +59,17 @@ void QtView::OnIdle(){
   m_pApp->processTask();
 }
 
-void QtView::listenSever()
+void QtView::listenServer()
 {
+  char buff[4097];
+  string str;
   while(true){
     TCPSocket *sock=m_server->accept();
-    char buff[1024];
-    while(sock->recv(buff,1023)>0){
+    memset(buff,0,sizeof(buff));
+    while(sock->recv(buff,4096)>0){
         printf("get:\n%s\n",buff);
+	str=string(buff);
+	m_pApp->onActString(str);
     }
     delete sock;
   }

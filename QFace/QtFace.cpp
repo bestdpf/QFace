@@ -73,6 +73,12 @@ bool QtFace::onResumePlayback()
     return ApplicationBase::onResumePlayback();
 }
 
+bool QtFace::onActString(std::string& str)
+{
+  return ApplicationBase::onActString(str);
+}
+
+
 void QtFace::jumpToFap(unsigned long fapID)
 {
 	unsigned long cnt = m_pFapStream->getFAPCount();
