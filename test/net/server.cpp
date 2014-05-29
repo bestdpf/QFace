@@ -3,10 +3,10 @@
 #include<Socket.h>
 using namespace net;
 int main(){
-    TCPServerSocket * server= new TCPServerSocket(5004);
+    TCPServerSocket * server= new TCPServerSocket(50011);
     TCPSocket * sock= server->accept();
-    char buff[128];
-    while(sock->recv(buff,127)>0){
+    char buff[1024];
+    while(sock->recv(buff,1023)>0){
         printf("get:\n%s\n",buff);
     }
     return 0;
