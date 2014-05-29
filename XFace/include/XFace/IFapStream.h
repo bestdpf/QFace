@@ -81,6 +81,7 @@ protected:
 	short m_FPS; //!< Number of frames per second to render
 	float m_version; //!< Version of the file
 	//std::stringstream m_ss;
+	std::string oldStr;
 public:
 	//! query open
 	virtual bool isEnd() const = 0;

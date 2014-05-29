@@ -36,7 +36,7 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     connect(this,SIGNAL(recvData(std::string)),this,SLOT(processRecvData(std::string)));
     //seems useless of idle signal
     //connect(m_timer,0,this,SLOT(OnIdle()));
-    m_timer->start(1000);
+    m_timer->start(10);
     m_server= new TCPServerSocket(m_listeningPort);
     //thread_group tg;
     boost::thread* th1 = new boost::thread(bind(&QtView::listenServer,this));
@@ -69,7 +69,7 @@ void QtView::listenServer()
     TCPSocket *sock=m_server->accept();
     memset(buff,0,sizeof(buff));
     while(sock->recv(buff,4096)>0){
-        printf("get:\n%s\n",buff);
+        //printf("get:\n%s\n",buff);
 	str=string(buff);
 	emit(recvData(str));
 	/*
@@ -232,6 +232,7 @@ void QtView::LoadIdentity(){
     xRot=0;
     yRot=0;
     zRot=0;
+    Render();
 }
 
 void QtView::OnPaint()
@@ -295,7 +296,7 @@ void QtView::mouseMoveEvent(QMouseEvent *event)
     int dy = event->y() - lastPos.y();
 
     if (event->buttons() & Qt::LeftButton) {
-        setXRotation(xRot + 0.08 * dy);
+        setXRotation(xRot + 0.08* dy);
         setYRotation(yRot + 0.08 * dx);
     } else if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + 0.08 * dy);

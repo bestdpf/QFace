@@ -40,6 +40,7 @@ namespace XFace{
 
 FAPFile::FAPFile(void) : m_bLoaded(false), m_currentFAPID(0)
 {
+  oldStr="";
 }
 
 FAPFile::~FAPFile(void)
@@ -48,7 +49,7 @@ FAPFile::~FAPFile(void)
 bool FAPFile::openString(std::string& input, const FAPU& fapu)
 {
     printf("open string now\n");
-	std::istringstream m_ss(input);
+	std::istringstream m_ss(oldStr+input);
 	//m_ss<<input;
 	printf("before clean m_faps size %d\n",m_FAPs.size());
 	m_FAPs.clear();
@@ -61,8 +62,9 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 	char stupidname[255];
 	int mask[68];
 	int row = 0;
-	printf("dump m_ss\n------\n%s\n\n",m_ss.str().c_str());
-	while ( !m_ss.eof()/*first||m_ss.str().length()>2000*/ )
+	//int circle=(oldStr.length()+input.length())/330;
+	//printf("dump m_ss\n------\n%s\n\n",m_ss.str().c_str());
+	while ( first )//only process a frame one time
 	{
 		printf("begin while circle\n");
 		first=false;
@@ -79,7 +81,7 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 		std::fill_n(std::back_inserter(fap_set), 68, 0.0f);
 		for (int i = 0; i < 68; ++i)
 			{
-				if(mask[i] != 0)
+				if(mask[i] == 1)
 				{
 					if(i == 0) //viseme to decode
 					{
@@ -98,11 +100,14 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 						fap_set[i] = (float)val;
 					}
 				}
+				else if(mask[i]!=0){
+				  printf("err in mask\nerror\n\n\n\n\n");
+				}
 			}
 		printf("push back m_FAPs...\n-------\n-----------\n");
 		m_FAPs.push_back(fap_set);
 	}
-
+	oldStr=m_ss.str();
 	scaleFAPs(fapu);
 	adjustFAPs();
 	

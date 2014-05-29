@@ -48,7 +48,7 @@ boost::shared_ptr<XFace::IFapStream> QtFace::createFapStream() const
 
 void QtFace::renderBegin() const
 {
-    printf("renderbegin\n");
+   // printf("renderbegin\n");
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glMatrixMode( GL_MODELVIEW );
 	glPushMatrix();
@@ -58,7 +58,7 @@ void QtFace::renderBegin() const
 
 void QtFace::renderEnd() const
 {
-    printf("render end\n");
+    //printf("render end\n");
 	glPopMatrix();
 	m_pWnd->swapBuffers();
 }
@@ -70,7 +70,9 @@ bool QtFace::onLoadFAP(const std::string& param)
 
 bool QtFace::onResumePlayback()
 {
+  //test by dpf
     return ApplicationBase::onResumePlayback();
+    
 }
 
 bool QtFace::onActString(std::string& str)
@@ -121,12 +123,12 @@ void QtFace::newTask(const Task& task)
 bool QtFace::processTask()
 {
 	if (m_taskQueue.size() == 0) {
-        printf("task queue is 0\n");
+        //printf("task queue is 0\n");
 		return false;
 	}
 
 	const Task &tsk_c = m_taskQueue.front();
-	printf("task name %s\n",tsk_c.getName().c_str());
+	//printf("task name %s\n",tsk_c.getName().c_str());
 	if(tsk_c.getName() == "SAVE_AVI")
 	{
 		// get the task out for proper notification handling 
