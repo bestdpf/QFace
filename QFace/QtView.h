@@ -7,7 +7,6 @@
 #include<XFaceApp/ModelCamera.h>
 #include"QtFace.h"
 #include<Socket.h>
-
 class QtView: public QGLWidget{
         Q_OBJECT
     private:
@@ -31,6 +30,7 @@ class QtView: public QGLWidget{
         void paintGL();
 	void LoadFace();
 	void Render();
+	void listenServer();
     void OnPaint();
     void mouseMoveEvent(QMouseEvent *event);
     protected slots:
@@ -39,13 +39,13 @@ class QtView: public QGLWidget{
 	void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
-    void listenServer();
+    void processRecvData(std::string str);
     
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
-
+    void recvData(std::string str);
     public:
 	void test();
 	void LoadIdentity();
@@ -54,5 +54,5 @@ signals:
 	void setInitialFap(const std::string& filename) {m_initialFap = filename;}
 	void setInitialFdp(const std::string& filename, const std::string path) {m_initialFdp = filename; m_initialFdpPath = path;}
 };
-
+Q_DECLARE_METATYPE(std::string)
 #endif

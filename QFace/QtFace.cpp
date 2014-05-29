@@ -120,13 +120,13 @@ void QtFace::newTask(const Task& task)
 
 bool QtFace::processTask()
 {
-    printf("qt face process task\n");
 	if (m_taskQueue.size() == 0) {
         printf("task queue is 0\n");
 		return false;
 	}
 
 	const Task &tsk_c = m_taskQueue.front();
+	printf("task name %s\n",tsk_c.getName().c_str());
 	if(tsk_c.getName() == "SAVE_AVI")
 	{
 		// get the task out for proper notification handling 

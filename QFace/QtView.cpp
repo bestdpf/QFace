@@ -32,6 +32,8 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     m_initialFdpPath = "../Faces/alice/";
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
+    qRegisterMetaType<std::string>();
+    connect(this,SIGNAL(recvData(std::string)),this,SLOT(processRecvData(std::string)));
     //seems useless of idle signal
     //connect(m_timer,0,this,SLOT(OnIdle()));
     m_timer->start(1000);
@@ -69,10 +71,23 @@ void QtView::listenServer()
     while(sock->recv(buff,4096)>0){
         printf("get:\n%s\n",buff);
 	str=string(buff);
-	m_pApp->onActString(str);
+	emit(recvData(str));
+	/*
+	bool ret=m_pApp->onActString(str);
+	if(ret)m_pApp->onResumePlayback();
+	else printf("open string failed\n");
+	//m_pApp->onResumePlayback();
+	*/
     }
     delete sock;
   }
+}
+
+void QtView::processRecvData(string str)
+{
+  printf("process Recv Data\n");
+  if(m_pApp->onActString(str))m_pApp->onResumePlayback();
+  else printf("open string failed return\n");
 }
 
 
@@ -91,7 +106,7 @@ void QtView::initGL(){
 }
 
 void QtView::paintGL(){
-    printf("before paintGL\n");
+    //printf("before paintGL\n");
     makeCurrent();
     if(!m_init){
       initGL();
@@ -101,7 +116,7 @@ void QtView::paintGL(){
     else{
       Render();
     }
-    printf("paintGL succ\n");
+    //printf("paintGL succ\n");
 }
 
 void QtView::LoadFace()

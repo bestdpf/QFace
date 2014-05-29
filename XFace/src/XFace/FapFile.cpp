@@ -47,8 +47,10 @@ FAPFile::~FAPFile(void)
 }
 bool FAPFile::openString(std::string& input, const FAPU& fapu)
 {
-	//std::istringstream iss(input);
-	m_ss<<input;
+    printf("open string now\n");
+	std::istringstream m_ss(input);
+	//m_ss<<input;
+	printf("before clean m_faps size %d\n",m_FAPs.size());
 	m_FAPs.clear();
 	m_bLoaded = false;
 
@@ -59,8 +61,10 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 	char stupidname[255];
 	int mask[68];
 	int row = 0;
-	while ( first||m_ss.str().length()>2000 )
+	printf("dump m_ss\n------\n%s\n\n",m_ss.str().c_str());
+	while ( !m_ss.eof()/*first||m_ss.str().length()>2000*/ )
 	{
+		printf("begin while circle\n");
 		first=false;
 		if(m_ss.fail() || m_ss.bad())
 			return false;
@@ -69,7 +73,9 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 				m_ss >> mask[i];
 		}
 		std::vector<float> fap_set;
+		printf("before reserve fap\n");
 		fap_set.reserve(68);
+		printf("after fap reserve\n");
 		std::fill_n(std::back_inserter(fap_set), 68, 0.0f);
 		for (int i = 0; i < 68; ++i)
 			{
@@ -93,6 +99,7 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 					}
 				}
 			}
+		printf("push back m_FAPs...\n-------\n-----------\n");
 		m_FAPs.push_back(fap_set);
 	}
 
