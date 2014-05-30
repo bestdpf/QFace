@@ -52,6 +52,7 @@ QtView::~QtView(){
     delete m_pApp;
     delete m_timer;
     delete m_timer20;
+    delete m_server;
 }
 
 void QtView::OnTimer(){
