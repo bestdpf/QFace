@@ -80,6 +80,10 @@ bool QtFace::onActString(std::string& str)
   return ApplicationBase::onActString(str);
 }
 
+bool QtFace::onActOldString()
+{
+  return ApplicationBase::onActOldString();
+}
 
 void QtFace::jumpToFap(unsigned long fapID)
 {

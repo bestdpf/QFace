@@ -29,6 +29,7 @@ public:
     void newTask(const Task& task);
     bool onResumePlayback();
     bool onActString(std::string& str);
+    bool onActOldString();
     void jumpToFap(unsigned long fapID);
     QtFace(QtView* pWnd);
 };

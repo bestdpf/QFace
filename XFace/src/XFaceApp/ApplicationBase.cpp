@@ -177,6 +177,12 @@ bool ApplicationBase::onActString(std::string& str)
   onResumePlayback();
 }
 
+bool ApplicationBase::onActOldString()
+{
+  if(m_pFapStream->openOldString(m_pFace->getFAPU()))
+  onResumePlayback();
+  return true;
+}
 
 /*!
 	Starts/Resumes the playback of FAP stream and the WAV file and sends back 

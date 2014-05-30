@@ -90,6 +90,7 @@ public:
 	//! open/read the stream
 	virtual bool open(std::istream&, const FAPU&) = 0;
 	virtual bool openString(std::string&, const FAPU&)=0;
+	virtual bool openOldString(const FAPU&)=0;
 	//! Advance to the next FAP.
 	virtual void next() = 0; 
 	//! Rewind to the first FAP.

@@ -117,6 +117,78 @@ bool FAPFile::openString(std::string& input, const FAPU& fapu)
 	return true;
 }
 
+bool FAPFile::openOldString(const FAPU& fapu)
+{
+    printf("open old string now\n");
+	if(oldStr.length()<10)return false;
+    std::istringstream m_ss(oldStr);
+	//m_ss<<input;
+	printf("before clean m_faps size %d\n",m_FAPs.size());
+	m_FAPs.clear();
+	m_bLoaded = false;
+
+	std::string comment;
+	bool init = true;
+	bool first =true;
+	bool isMask = true;
+	char stupidname[255];
+	int mask[68];
+	int row = 0;
+	//int circle=(oldStr.length()+input.length())/330;
+	//printf("dump m_ss\n------\n%s\n\n",m_ss.str().c_str());
+	while ( first )//only process a frame one time
+	{
+		printf("begin while circle\n");
+		first=false;
+		if(m_ss.fail() || m_ss.bad())
+			return false;
+		m_FPS=25;
+		for (int i = 0; i < 68; ++i) {
+				m_ss >> mask[i];
+		}
+		std::vector<float> fap_set;
+		printf("before reserve fap\n");
+		fap_set.reserve(68);
+		printf("after fap reserve\n");
+		std::fill_n(std::back_inserter(fap_set), 68, 0.0f);
+		for (int i = 0; i < 68; ++i)
+			{
+				if(mask[i] == 1)
+				{
+					if(i == 0) //viseme to decode
+					{
+						//not use now
+ 					}
+					else if (i == 1) // expression
+					{
+						//not use now
+					}
+					else // low level FAPs
+					{
+						// Simple variant for optimal performance, assumes that the input FAPs
+						// are properly encoded by definition!
+						int val;
+						m_ss >> val;
+						fap_set[i] = (float)val;
+					}
+				}
+				else if(mask[i]!=0){
+				  printf("err in mask\nerror\n\n\n\n\n");
+				}
+			}
+		printf("push back m_FAPs...\n-------\n-----------\n");
+		m_FAPs.push_back(fap_set);
+	}
+	oldStr=m_ss.str();
+	scaleFAPs(fapu);
+	adjustFAPs();
+	
+	rewind();
+	m_bLoaded = true;
+	
+	return true;
+}
+
 
 bool FAPFile::open(std::istream& input, const FAPU& fapu)
 {

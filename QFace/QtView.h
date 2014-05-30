@@ -15,6 +15,7 @@ class QtView: public QGLWidget{
 	bool m_init;
 	XFaceApp::ModelCamera* m_pCamera;
 	QTimer* m_timer;
+	QTimer* m_timer20;
 	QSettings* m_settings;
 	unsigned long m_listeningPort;
 	net::TCPServerSocket *m_server;

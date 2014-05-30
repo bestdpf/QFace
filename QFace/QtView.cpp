@@ -31,12 +31,15 @@ QtView::QtView(QWidget* parent):QGLWidget(parent){
     m_initialFap = dummy.toString().toStdString();
     m_initialFdpPath = "../Faces/alice/";
     m_timer = new QTimer(this);
+    m_timer20 = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
+    connect(m_timer20,SIGNAL(timeout()),this,SLOT(OnIdle()));
     qRegisterMetaType<std::string>();
     connect(this,SIGNAL(recvData(std::string)),this,SLOT(processRecvData(std::string)));
     //seems useless of idle signal
     //connect(m_timer,0,this,SLOT(OnIdle()));
     m_timer->start(10);
+    m_timer20->start(20);
     m_server= new TCPServerSocket(m_listeningPort);
     //thread_group tg;
     boost::thread* th1 = new boost::thread(bind(&QtView::listenServer,this));
@@ -48,6 +51,7 @@ QtView::~QtView(){
     delete m_pCamera;
     delete m_pApp;
     delete m_timer;
+    delete m_timer20;
 }
 
 void QtView::OnTimer(){
@@ -58,7 +62,8 @@ void QtView::OnIdle(){
   if(!m_pApp)return;
   //is it right? i don't know????
   makeCurrent();
-  m_pApp->processTask();
+  m_pApp->onActOldString();
+  //m_pApp->processTask();
 }
 
 void QtView::listenServer()
@@ -88,6 +93,7 @@ void QtView::processRecvData(string str)
   printf("process Recv Data\n");
   if(m_pApp->onActString(str))m_pApp->onResumePlayback();
   else printf("open string failed return\n");
+  updateGL();
 }
 
 
