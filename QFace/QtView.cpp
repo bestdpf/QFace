@@ -63,6 +63,7 @@ void QtView::OnIdle(){
   //is it right? i don't know????
   makeCurrent();
   m_pApp->onActOldString();
+  updateGL();
   //m_pApp->processTask();
 }
 
